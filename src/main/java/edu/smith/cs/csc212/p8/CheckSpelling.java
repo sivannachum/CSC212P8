@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
+import java.util.Random;
 import java.util.TreeSet;
 
 public class CheckSpelling {
@@ -55,7 +55,51 @@ public class CheckSpelling {
 	public static List<String> createMixedDataset(List<String> yesWords, int numSamples, double fractionYes) {
 		// Hint to the ArrayList that it will need to grow to numSamples size:
 		List<String> output = new ArrayList<>(numSamples);
-		// TODO: select numSamples * fractionYes words from yesWords; create the rest as no words.
+		List<String> noWords = new ArrayList<>();
+		noWords.add("ajdklsjqwker");
+		noWords.add("bjkqepr");
+		noWords.add("cjierup");
+		noWords.add("doolskjfa");
+		noWords.add("ejkla");
+		noWords.add("fiuopwre");
+		noWords.add("gqupe");
+		noWords.add("hqeurp");
+		noWords.add("iqpeiur");
+		noWords.add("jquir");
+		noWords.add("kiil");
+		noWords.add("lqiweu");
+		noWords.add("mqou");
+		noWords.add("niuo");
+		noWords.add("ouqwrep");
+		noWords.add("pqui");
+		noWords.add("quiree");
+		noWords.add("rrwou");
+		noWords.add("sewu");
+		noWords.add("tiuoew");
+		noWords.add("uiqpu");
+		noWords.add("vitalitey");
+		noWords.add("wuou");
+		noWords.add("xavii");
+		noWords.add("yiru");
+		noWords.add("zjkla");
+		int n = 0;
+		int yesWordsSize = yesWords.size();
+		Random generator = new Random();
+		while (n < numSamples * fractionYes) {
+			int r = generator.nextInt(yesWordsSize);
+			String word = yesWords.get(r);
+			if (output.contains(word)) {
+				continue;
+			}
+			else {
+				output.add(word);
+				n++;
+			}
+		}
+		while (output.size() < numSamples) {
+			int r = generator.nextInt(26);
+			output.add(noWords.get(r));
+		}
 		return output;
 	}
 	
@@ -65,18 +109,55 @@ public class CheckSpelling {
 		List<String> listOfWords = loadDictionary();
 		
 		// --- Create a bunch of data structures for testing:
+		long start = System.nanoTime();
 		TreeSet<String> treeOfWords = new TreeSet<>(listOfWords);
+		long end = System.nanoTime();
+		double time = (end - start) / 1e9;
+		System.out.println("Loaded TreeSet in " + time +" seconds.");
+		start = System.nanoTime();
 		HashSet<String> hashOfWords = new HashSet<>(listOfWords);
+		end = System.nanoTime();
+		time = (end - start) / 1e9;
+		System.out.println("Loaded HashSet in " + time +" seconds.");
+		
+		start = System.nanoTime();
+		TreeSet<String> treeWords = new TreeSet<>();
+		for (String w : listOfWords) {
+			treeWords.add(w);
+		}
+		end = System.nanoTime();
+		time = (end - start) / 1e9;
+		System.out.println("Loaded TreeSet with for loop in " + time +" seconds.");
+		start = System.nanoTime();
+		HashSet<String> hashWords = new HashSet<>();
+		for (String w : listOfWords) {
+			hashWords.add(w);
+		}
+		end = System.nanoTime();
+		time = (end - start) / 1e9;
+		System.out.println("Loaded HashSet with for loop in " + time +" seconds.");
+		
+		start = System.nanoTime();
 		SortedStringListSet bsl = new SortedStringListSet(listOfWords);
+		end = System.nanoTime();
+		time = (end - start) / 1e9;
+		System.out.println("Loaded SortedStringListSet in " + time +" seconds.");
+		start = System.nanoTime();
 		CharTrie trie = new CharTrie();
 		for (String w : listOfWords) {
 			trie.insert(w);
 		}
+		end = System.nanoTime();
+		time = (end - start) / 1e9;
+		System.out.println("Loaded CharTrie in " + time +" seconds.");
+		start = System.nanoTime();
 		LLHash hm100k = new LLHash(100000);
 		for (String w : listOfWords) {
 			hm100k.add(w);
 		}
-		
+		end = System.nanoTime();
+		time = (end - start) / 1e9;
+		System.out.println("Loaded LLHash in " + time +" seconds.");
 		// --- Make sure that every word in the dictionary is in the dictionary:
 		timeLookup(listOfWords, treeOfWords);
 		timeLookup(listOfWords, hashOfWords);
