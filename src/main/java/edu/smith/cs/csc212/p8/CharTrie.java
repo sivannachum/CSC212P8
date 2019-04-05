@@ -119,21 +119,18 @@ public class CharTrie extends AbstractSet<String> {
 		 * @return the count of nodes that exist in the Trie, starting from here.
 		 */
 		public int countNodes() {
-			if (this == null) {
+			int count = 1;
+			if (this.links.length == 0) {
 				return 0;
 			}
 			else {
-				int n = 0;
-				while (n < 27) {
-					return 1 + this.links[n].countNodes();
-					n++;
+				for (Node l : links) {
+					if (l != null) {
+						count = count + l.countNodes();
+					}
 				}
+					return count;
 			}
-			// TODO: work on
-			// loop over links
-			// if they're not null
-			// count them, too
-			return count;
 		}
 	}
 	
