@@ -97,7 +97,7 @@ public class LLHash extends AbstractSet<String> {
 		int count = 0;
 		for (Bucket b : buckets) {
 			if (b.values.size() > 1) {
-				count ++;
+				count++;
 			}
 		}
 		return count;
