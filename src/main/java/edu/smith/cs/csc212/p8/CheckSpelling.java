@@ -30,6 +30,24 @@ public class CheckSpelling {
 		return words;
 	}
 	
+	public static List<String> loadBook() {
+		List<String> words = new ArrayList<String>();
+		List<String> lines;
+		long start = System.nanoTime();
+		try {
+			lines = Files.readAllLines(new File("src/main/resources/book").toPath());
+		} catch (IOException e) {
+			throw new RuntimeException("Couldn't find the book.", e);
+		}
+		for (String s : lines) {
+			words.addAll(WordSplitter.splitTextToWords(s));
+		}
+		long end = System.nanoTime();
+		double time = (end - start) / 1e9;
+		System.out.println("Loaded " + words.size() + " entries in " + time + " seconds.");
+		return words;
+	}
+	
 	/**
 	 * This method looks for all the words in a dictionary.
 	 * @param words - the "queries"
@@ -40,9 +58,15 @@ public class CheckSpelling {
 		
 		int found = 0;
 		for (String w : words) {
+			// Random generator = new Random();
 			if (dictionary.contains(w)) {
 				found++;
 			}
+			/*
+			else if (generator.nextInt(10000) == 1) {
+				System.out.print(w + " ");
+			}
+			*/
 		}
 		
 		long endLookup = System.nanoTime();
@@ -177,7 +201,13 @@ public class CheckSpelling {
 			timeLookup(hitsAndMisses, trie);
 			timeLookup(hitsAndMisses, hm100k);
 		}
-			
+		
+		List<String> book = loadBook();
+		timeLookup(book, treeOfWords);
+		timeLookup(book, hashOfWords);
+		timeLookup(book, bsl);
+		timeLookup(book, trie);
+		timeLookup(book, hm100k);
 
 		
 		// --- linear list timing:
