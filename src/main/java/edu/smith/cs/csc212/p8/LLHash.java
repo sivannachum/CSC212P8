@@ -91,6 +91,7 @@ public class LLHash extends AbstractSet<String> {
 	}
 	
 	/**
+	 * Count how many buckets are holding more than one thing.
 	 * @return the number of buckets with more than one value.
 	 */
 	public int countCollisions() {
@@ -104,6 +105,7 @@ public class LLHash extends AbstractSet<String> {
 	}
 
 	/**
+	 * Count how many buckets are being used.
 	 * @return the number of buckets with any value.
 	 */
 	public int countUsedBuckets() {

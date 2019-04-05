@@ -4,12 +4,14 @@ import org.junit.Assert;
 import org.junit.Test;
 
 public class TestCountNodes {
+	// Test a Trie that only has a root node
 	@Test
 	public void testEmpty() {
 		CharTrie trie = new CharTrie();
 		Assert.assertEquals(1, trie.countNodes());
 	}
 	
+	// Test a Trie that actually has words in it
 	@Test
 	public void testMultiple() {
 		CharTrie trie = new CharTrie();

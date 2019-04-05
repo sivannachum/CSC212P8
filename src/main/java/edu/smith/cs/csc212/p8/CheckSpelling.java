@@ -30,15 +30,21 @@ public class CheckSpelling {
 		return words;
 	}
 	
+	/**
+	 * Return all lists from some Project Gutenberg book.
+	 * @return a list of all the words in the book!
+	 */
 	public static List<String> loadBook() {
 		List<String> words = new ArrayList<String>();
 		List<String> lines;
 		long start = System.nanoTime();
+		// take all the text in the book
 		try {
 			lines = Files.readAllLines(new File("src/main/resources/book").toPath());
 		} catch (IOException e) {
 			throw new RuntimeException("Couldn't find the book.", e);
 		}
+		// split all that text into the individual words
 		for (String s : lines) {
 			words.addAll(WordSplitter.splitTextToWords(s));
 		}
@@ -58,6 +64,8 @@ public class CheckSpelling {
 		
 		int found = 0;
 		for (String w : words) {
+			// The commented out code is how I figured out what kinds of words were considered "Mis-spelled."
+			// I left it in in case you wanted to see how I did it.
 			// Random generator = new Random();
 			if (dictionary.contains(w)) {
 				found++;
@@ -79,6 +87,7 @@ public class CheckSpelling {
 	public static List<String> createMixedDataset(List<String> yesWords, int numSamples, double fractionYes) {
 		// Hint to the ArrayList that it will need to grow to numSamples size:
 		List<String> output = new ArrayList<>(numSamples);
+		// Make a list of Strings that aren't words.
 		List<String> noWords = new ArrayList<>();
 		noWords.add("aardvaklsjqwker");
 		noWords.add("bjorepr");
@@ -108,6 +117,7 @@ public class CheckSpelling {
 		noWords.add("zebrkla");
 		int n = 0;
 		int yesWordsSize = yesWords.size();
+		// Add words from the dictionary to the output list randomly, without repeats
 		Random generator = new Random();
 		while (n < numSamples * fractionYes) {
 			int r = generator.nextInt(yesWordsSize);
@@ -120,6 +130,7 @@ public class CheckSpelling {
 				n++;
 			}
 		}
+		// Make the rest of the words in the output list not real words
 		while (output.size() < numSamples) {
 			int r = generator.nextInt(26);
 			output.add(noWords.get(r));
@@ -133,6 +144,7 @@ public class CheckSpelling {
 		List<String> listOfWords = loadDictionary();
 		
 		// --- Create a bunch of data structures for testing:
+		// Time how long their creation takes and print it out.
 		long start = System.nanoTime();
 		TreeSet<String> treeOfWords = new TreeSet<>(listOfWords);
 		long end = System.nanoTime();
@@ -144,6 +156,7 @@ public class CheckSpelling {
 		time = (end - start) / 1e9;
 		System.out.println("Loaded HashSet in " + time +" seconds.");
 		
+		// Load TreeSet and HashSet with a loop instead
 		start = System.nanoTime();
 		TreeSet<String> treeWords = new TreeSet<>();
 		for (String w : listOfWords) {
@@ -202,6 +215,7 @@ public class CheckSpelling {
 			timeLookup(hitsAndMisses, hm100k);
 		}
 		
+		// See how long it takes the data structures to find all the words in the book
 		List<String> book = loadBook();
 		timeLookup(book, treeOfWords);
 		timeLookup(book, hashOfWords);
