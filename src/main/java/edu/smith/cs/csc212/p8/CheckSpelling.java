@@ -80,9 +80,9 @@ public class CheckSpelling {
 		// Hint to the ArrayList that it will need to grow to numSamples size:
 		List<String> output = new ArrayList<>(numSamples);
 		List<String> noWords = new ArrayList<>();
-		noWords.add("ajdklsjqwker");
-		noWords.add("bjkqepr");
-		noWords.add("cjierup");
+		noWords.add("aardvaklsjqwker");
+		noWords.add("bjorepr");
+		noWords.add("ceirup");
 		noWords.add("doolskjfa");
 		noWords.add("ejkla");
 		noWords.add("fiuopwre");
@@ -95,7 +95,7 @@ public class CheckSpelling {
 		noWords.add("mqou");
 		noWords.add("niuo");
 		noWords.add("ouqwrep");
-		noWords.add("pqui");
+		noWords.add("pooui");
 		noWords.add("quiree");
 		noWords.add("rrwou");
 		noWords.add("sewu");
@@ -105,7 +105,7 @@ public class CheckSpelling {
 		noWords.add("wuou");
 		noWords.add("xavii");
 		noWords.add("yiru");
-		noWords.add("zjkla");
+		noWords.add("zebrkla");
 		int n = 0;
 		int yesWordsSize = yesWords.size();
 		Random generator = new Random();
