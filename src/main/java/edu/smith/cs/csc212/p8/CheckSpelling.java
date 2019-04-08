@@ -84,37 +84,16 @@ public class CheckSpelling {
 		System.out.println(dictionary.getClass().getSimpleName()+": Lookup of items found="+fractionFound+" time="+nsPerItem+" ns/item");
 	}
 	
+	/**
+	 * Creates a data set with some real and some not real words
+	 * @param yesWords Words that are in the dictionary
+	 * @param numSamples the number of words you want in the dataset
+	 * @param fractionYes the number of real words you want in the data set
+	 * @return a dataset with some real and some not real words
+	 */
 	public static List<String> createMixedDataset(List<String> yesWords, int numSamples, double fractionYes) {
 		// Hint to the ArrayList that it will need to grow to numSamples size:
 		List<String> output = new ArrayList<>(numSamples);
-		// Make a list of Strings that aren't words.
-		List<String> noWords = new ArrayList<>();
-		noWords.add("aardvaklsjqwker");
-		noWords.add("bjorepr");
-		noWords.add("ceirup");
-		noWords.add("doolskjfa");
-		noWords.add("ejkla");
-		noWords.add("fiuopwre");
-		noWords.add("gqupe");
-		noWords.add("hqeurp");
-		noWords.add("iqpeiur");
-		noWords.add("jquir");
-		noWords.add("kiil");
-		noWords.add("lqiweu");
-		noWords.add("mqou");
-		noWords.add("niuo");
-		noWords.add("ouqwrep");
-		noWords.add("pooui");
-		noWords.add("quiree");
-		noWords.add("rrwou");
-		noWords.add("sewu");
-		noWords.add("tiuoew");
-		noWords.add("uiqpu");
-		noWords.add("vitalitey");
-		noWords.add("wuou");
-		noWords.add("xavii");
-		noWords.add("yiru");
-		noWords.add("zebrkla");
 		int n = 0;
 		int yesWordsSize = yesWords.size();
 		// Add words from the dictionary to the output list randomly, without repeats
@@ -132,8 +111,23 @@ public class CheckSpelling {
 		}
 		// Make the rest of the words in the output list not real words
 		while (output.size() < numSamples) {
-			int r = generator.nextInt(26);
-			output.add(noWords.get(r));
+			int r = generator.nextInt(yesWordsSize);
+			String word = yesWords.get(r);
+			int length = word.length();
+			String newWord;
+			if (length <= 2) {
+				// the odds of this being a real word are low
+				newWord = word + "zs";
+			}
+			else {
+				int z = generator.nextInt(length - 2);
+				z++;
+				String sub1 = word.substring(0, z);
+				String sub2 = word.substring(z);
+				// the odds of this being a real word are low
+				newWord = sub1 + "zs" + sub2;
+			}
+			output.add(newWord);
 		}
 		return output;
 	}
