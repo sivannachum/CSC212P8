@@ -115,7 +115,7 @@ public class CharTrie extends AbstractSet<String> {
 		}
 		
 		/**
-		 * Counts the number of nodes in the Trie.
+		 * Counts the number of nodes, not characters, in the Trie.
 		 * @return the count of nodes that exist in the Trie, starting from here.
 		 */
 		public int countNodes() {
